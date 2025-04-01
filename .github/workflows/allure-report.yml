@@ -1,0 +1,74 @@
+
+name: Run Pytest and Deploy Allure Report
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🐍 Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: 📦 Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install allure-pytest pytest-playwright
+          npm install -g allure-commandline
+          playwright install
+          python -m pip install --upgrade pip
+          
+
+      - name: 🚀 Run Pytest and Generate Allure Results
+        run: |
+          pytest --alluredir=allure-results
+        continue-on-error: true
+
+      - name: 🔧 Install Allure
+        if: always()
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y allure
+
+      - name: 🎨 Generate Allure Report
+        if: always()
+        run: |
+          cp -r allure-report/history allure-results/
+          npx allure generate allure-results -o allure-report --clean
+          cp allure-custom/sabpaisalogo.png allure-report/
+          cp allure-plugin/custom-title-plugin/custom.css allure-report/
+          sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
+          sed -i 's|<title>Allure Report</title>|<title>Payment Gateway Report</title>|' allure-report/index.html
+
+      - name: 🛠 Debug - List Files
+        if: always()
+        run: ls -R
+
+      - name: 🔑 Set Up Git Authentication
+        if: always()
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: 🚀 Deploy Allure Report to GitHub Pages (master branch)
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./allure-report
+          force_orphan: true
+
+permissions:
+  contents: write
+
