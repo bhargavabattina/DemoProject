@@ -59,7 +59,7 @@ class TestLoginValidation:
                 login_page.fill_username(self.username)
 
             with allure.step("Filling Password"):
-                login_page.fill_password(self.password + "wjk")
+                login_page.fill_password(self.password)
 
             with allure.step("Clicking Login Button"):
                 login_page.click_login()
