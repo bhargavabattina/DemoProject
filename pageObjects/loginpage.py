@@ -4,8 +4,8 @@ from playwright.sync_api import Page
 class LoginPage:
 
     #CSS Selectors
-    username_css_selector = "input[placeholder='Username']"
-    password_css_selector = "input[placeholder='Password']"
+    username_css_selector = "input[placeholder='username']"
+    password_css_selector = "input[placeholder='password']"
     login_button_css_selector = "button[type='submit']"
 
     #XPATH Selectors

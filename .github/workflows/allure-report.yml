@@ -29,6 +29,8 @@ jobs:
 
        # 🔹 Download previous Allure report history (If exists)
       - name: 📥 Download Allure History (If Exists)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
         run: |
           mkdir -p allure-history
