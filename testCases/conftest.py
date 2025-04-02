@@ -28,8 +28,8 @@ TEAMS_WEBHOOK_URL = "https://srslivetech.webhook.office.com/webhookb2/e16c66cb-8
 def browser():
     """Fixture to launch the browser, bypass Cloudflare, and create a new context"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, slow_mo=300)
-        #browser = p.chromium.launch()
+        #browser = p.chromium.launch(headless=False, slow_mo=300)
+        browser = p.chromium.launch()
         # Create video directory
         video_dir = "videos/"
         if not os.path.exists(video_dir):

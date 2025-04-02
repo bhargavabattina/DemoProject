@@ -43,7 +43,7 @@ jobs:
       - name: 🎨 Generate Allure Report
         if: always()
         run: |
-         
+          cp -r allure-report/history allure-results/
           npx allure generate allure-results -o allure-report --clean
           cp allure-plugin/custom-title-plugin/custom.css allure-report/
           sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
