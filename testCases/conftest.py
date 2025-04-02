@@ -11,6 +11,7 @@ from utilites.readProperties import ReadConfig
 from config import LOGIN_DATE
 
 
+
 baseurl = LOGIN_DATE["orange_url"]
 
 # Report directory configuration

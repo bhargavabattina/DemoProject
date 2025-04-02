@@ -28,6 +28,13 @@ jobs:
           playwright install
           python -m pip install --upgrade pip
           
+      # Download previous Allure report history if exists
+      - name: Download Allure History
+        uses: actions/download-artifact@v3
+        with:
+          name: allure-report
+          path: allure-history
+          
 
       - name: 🚀 Run Pytest and Generate Allure Results
         run: |
@@ -40,10 +47,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y allure
 
+       # Copy history from old report to new results
+      - name: Copy History Folder
+        run: |
+          mkdir -p allure-results/history
+          if [ -d allure-history/history ]; then
+            cp -r allure-history/history allure-results/
+          fi
+
       - name: 🎨 Generate Allure Report
         if: always()
         run: |
-          cp -r allure-report/history allure-results/
           npx allure generate allure-results -o allure-report --clean
           cp allure-plugin/custom-title-plugin/custom.css allure-report/
           sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
@@ -52,6 +66,13 @@ jobs:
       - name: 🛠 Debug - List Files
         if: always()
         run: ls -R
+
+      - name: 📤 Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: allure-report
 
       - name: 🔑 Set Up Git Authentication
         if: always()
