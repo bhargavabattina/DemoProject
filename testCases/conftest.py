@@ -23,7 +23,7 @@ ALLURE_RESULTS_DIR = "allure-results"
 ALLURE_REPORT_DIR = "allure-report"
 
 # Microsoft Teams webhook URL
-TEAMS_WEBHOOK_URL = TEAMS_WEBHOOK_URL['teams_webhook_url']
+TEAMS_WEBHOOK_URL = TEAMS_WEBHOOK_URL["teams_webhook_url"]
 
 
 @pytest.fixture(scope="function")
