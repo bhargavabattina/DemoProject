@@ -1,22 +1,20 @@
+import os
 import configparser
 
-
-config=configparser.RawConfigParser()
-config.read(".\\Configuration\\config.ini")
+# Get the correct path for both local and CI
+config_path = os.path.join(os.path.dirname(__file__), "Configuration", "config.ini")
+config = configparser.RawConfigParser()
+config.read(config_path)
 
 class ReadConfig:
     @staticmethod
     def getApplicationUrl():
-        url=config.get('info','baseURL')
-        return url
+        return os.getenv("BASE_URL") or config.get('info', 'baseURL')
 
     @staticmethod
     def getUserName():
-        username = config.get('login', 'username')
-        return username
+        return os.getenv("USERNAME") or config.get('login', 'username')
 
     @staticmethod
     def getPassword():
-        password = config.get('login', 'password')
-        return password
-
+        return os.getenv("PASSWORD") or config.get('login', 'password')
