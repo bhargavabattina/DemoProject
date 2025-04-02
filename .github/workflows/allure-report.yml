@@ -27,25 +27,14 @@ jobs:
           npm install -g allure-commandline
           playwright install
 
-      # 📥 Download previous Allure report history if it exists
-      - name: Download Allure History
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report
-          path: allure-history
+     
 
       - name: 🚀 Run Pytest and Generate Allure Results
         run: |
           pytest --alluredir=allure-results
         continue-on-error: true
 
-      # 📂 Copy history from old report to new results
-      - name: Copy Allure History
-        run: |
-          mkdir -p allure-results/history
-          if [ -d allure-history/history ]; then
-            cp -r allure-history/history allure-results/
-          fi
+
 
       - name: 🎨 Generate Allure Report
         run: |
