@@ -1,0 +1,3 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"Test Payer Name Field Validation","30004","Correct Login Credentials Validation","testCases","Wed Apr 02 10:28:46 UTC 2025","broken","Wed Apr 02 10:29:16 UTC 2025","TestLoginValidation","login_test","",""
+"Test Payer Name Field Validation","30002","Wrong Login Credentials Validation","testCases","Wed Apr 02 10:29:20 UTC 2025","broken","Wed Apr 02 10:29:50 UTC 2025","TestLoginValidation","login_test","",""
