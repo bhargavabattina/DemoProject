@@ -1,4 +1,3 @@
-
 name: Run Pytest and Deploy Allure Report
 
 on:
@@ -10,6 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: 📥 Checkout Repository
@@ -27,40 +28,37 @@ jobs:
           npm install -g allure-commandline
           playwright install
           python -m pip install --upgrade pip
-          
+
       # Download previous Allure report history if exists
       - name: Download Allure History
         uses: actions/download-artifact@v3
         with:
           name: allure-report
           path: allure-history
-          
 
       - name: 🚀 Run Pytest and Generate Allure Results
-        run: |
-          pytest --alluredir=allure-results
+        run: pytest --alluredir=allure-results
         continue-on-error: true
 
-      - name: 🔧 Install Allure
-        if: always()
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y allure
-
-       # Copy history from old report to new results
+      # Copy history from old report to new results
       - name: Copy History Folder
         run: |
           mkdir -p allure-results/history
           if [ -d allure-history/history ]; then
+            echo "Copying previous history..."
             cp -r allure-history/history allure-results/
+          else
+            echo "No previous history found, starting fresh."
           fi
 
       - name: 🎨 Generate Allure Report
         if: always()
         run: |
-          npx allure generate allure-results -o allure-report --clean
-          cp allure-plugin/custom-title-plugin/custom.css allure-report/
-          sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
+          allure generate allure-results -o allure-report --clean
+          if [ -f allure-plugin/custom-title-plugin/custom.css ]; then
+            cp allure-plugin/custom-title-plugin/custom.css allure-report/
+            sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
+          fi
           sed -i 's|<title>Allure Report</title>|<title>Orange HRM Report</title>|' allure-report/index.html
 
       - name: 🛠 Debug - List Files
@@ -88,7 +86,3 @@ jobs:
           publish_branch: gh-pages
           publish_dir: ./allure-report
           force_orphan: true
-
-permissions:
-  contents: write
-
