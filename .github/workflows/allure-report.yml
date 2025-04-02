@@ -27,12 +27,7 @@ jobs:
           npm install -g allure-commandline
           playwright install
 
-      # 📥 Download previous Allure report history if it exists
-      - name: Download Allure History
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report
-          path: allure-history
+     
 
       - name: 🚀 Run Pytest and Generate Allure Results
         run: |
