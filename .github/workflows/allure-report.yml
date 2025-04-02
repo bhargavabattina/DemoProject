@@ -9,8 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: 📥 Checkout Repository
@@ -23,48 +21,60 @@ jobs:
 
       - name: 📦 Install Dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install allure-pytest pytest-playwright
           npm install -g allure-commandline
           playwright install
-          python -m pip install --upgrade pip
 
-     
+      # 📥 Download previous Allure report history if it exists
+      - name: Download Allure History
+        uses: actions/download-artifact@v2
+        with:
+          name: allure-report
+          path: allure-history
 
       - name: 🚀 Run Pytest and Generate Allure Results
-        run: pytest --alluredir=allure-results
+        run: |
+          pytest --alluredir=allure-results
         continue-on-error: true
 
-
+      # 📂 Copy history from old report to new results
+      - name: Copy Allure History
+        run: |
+          mkdir -p allure-results/history
+          if [ -d allure-history/history ]; then
+            cp -r allure-history/history allure-results/
+          fi
 
       - name: 🎨 Generate Allure Report
-        if: always()
         run: |
-          allure generate allure-results -o allure-report --clean
-          if [ -f allure-plugin/custom-title-plugin/custom.css ]; then
-            cp allure-plugin/custom-title-plugin/custom.css allure-report/
-            sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
-          fi
+          npx allure generate allure-results -o allure-report --clean
+          cp allure-plugin/custom-title-plugin/custom.css allure-report/
+          sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
           sed -i 's|<title>Allure Report</title>|<title>Orange HRM Report</title>|' allure-report/index.html
 
+      # 🛠 Debug - Check Files
       - name: 🛠 Debug - List Files
         if: always()
         run: ls -R
 
+      # 📤 Upload Allure Report
       - name: 📤 Upload Allure Report
-        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: allure-report
 
+      # 🏗️ Configure Git Authentication
       - name: 🔑 Set Up Git Authentication
         if: always()
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      - name: 🚀 Deploy Allure Report to GitHub Pages (master branch)
+      # 🚀 Deploy Allure Report to GitHub Pages
+      - name: 🚀 Deploy Allure Report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -72,3 +82,6 @@ jobs:
           publish_branch: gh-pages
           publish_dir: ./allure-report
           force_orphan: true
+
+permissions:
+  contents: write
