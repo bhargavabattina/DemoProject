@@ -8,9 +8,10 @@ import time
 import allure
 from playwright.sync_api import sync_playwright, Page
 from utilites.readProperties import ReadConfig
+from config import LOGIN_DATE
 
 
-baseurl = ReadConfig.getApplicationUrl()
+baseurl = LOGIN_DATE["orange_url"]
 
 # Report directory configuration
 REPORT_DIR = "reports"
