@@ -27,12 +27,16 @@ jobs:
           npm install -g allure-commandline
           playwright install
 
-      # 📥 Download previous Allure report history if it exists
-      - name: Download Allure History
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report
-          path: history
+       # 🔹 Download previous Allure report history (If exists)
+      - name: 📥 Download Allure History (If Exists)
+        continue-on-error: true
+        run: |
+          mkdir -p allure-history
+          if gh api repos/${{ github.repository }}/actions/artifacts | grep -q "allure-report"; then
+            gh run download --name allure-report --dir allure-history
+          else
+            echo "No previous Allure history found. Skipping download."
+          fi
 
       - name: 🚀 Run Pytest and Generate Allure Results
         run: |
@@ -54,10 +58,7 @@ jobs:
           sed -i '/<\/head>/i <link rel="stylesheet" type="text/css" href="custom.css">' allure-report/index.html
           sed -i 's|<title>Allure Report</title>|<title>Orange HRM Report</title>|' allure-report/index.html
 
-      # 🛠 Debug - Check Files
-      - name: 🛠 Debug - List Files
-        if: always()
-        run: ls -R
+     
 
       # 📤 Upload Allure Report
       - name: 📤 Upload Allure Report
