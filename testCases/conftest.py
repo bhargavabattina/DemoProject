@@ -8,7 +8,7 @@ import time
 import allure
 from playwright.sync_api import sync_playwright, Page
 from utilites.readProperties import ReadConfig
-from config import URL_DATA
+from config import URL_DATA,TEAMS_WEBHOOK_URL
 
 
 
@@ -23,7 +23,7 @@ ALLURE_RESULTS_DIR = "allure-results"
 ALLURE_REPORT_DIR = "allure-report"
 
 # Microsoft Teams webhook URL
-TEAMS_WEBHOOK_URL = "https://srslivetech.webhook.office.com/webhookb2/e16c66cb-8396-4759-befc-8d4462ee1d31@4f1f5a9f-f6a8-4bc9-a157-7fddfe22b5f6/IncomingWebhook/60bfc1d3c89d4f72bdc44e674ee9b38d/3e17875b-b12b-400d-adc2-eefc03796a3a/V27HSL3GH65e9-gmNmRADasY76FK4I1nYMKvpJylj74RE1"
+TEAMS_WEBHOOK_URL = TEAMS_WEBHOOK_URL['teams_webhook_url']
 
 
 @pytest.fixture(scope="function")
