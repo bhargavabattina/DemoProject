@@ -29,27 +29,13 @@ jobs:
           playwright install
           python -m pip install --upgrade pip
 
-      # Download previous Allure report history if exists
-      - name: Download Allure History
-        uses: actions/download-artifact@v3
-        with:
-          name: allure-report
-          path: allure-history
+     
 
       - name: 🚀 Run Pytest and Generate Allure Results
         run: pytest --alluredir=allure-results
         continue-on-error: true
 
-      # Copy history from old report to new results
-      - name: Copy History Folder
-        run: |
-          mkdir -p allure-results/history
-          if [ -d allure-history/history ]; then
-            echo "Copying previous history..."
-            cp -r allure-history/history allure-results/
-          else
-            echo "No previous history found, starting fresh."
-          fi
+
 
       - name: 🎨 Generate Allure Report
         if: always()
