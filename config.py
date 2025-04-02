@@ -4,7 +4,7 @@ URL_DATA = {
 }
 
 
-LOGIN_DATE = {
+LOGIN_DATA = {
 
     "username": "Admin",
     "password": "admin123",

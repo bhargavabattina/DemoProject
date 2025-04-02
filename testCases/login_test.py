@@ -3,7 +3,7 @@ import pytest
 import allure
 from pageObjects.loginpage import LoginPage
 from utilites.readProperties import ReadConfig
-from config import LOGIN_DATE
+from config import LOGIN_DATA
 
 
 @allure.epic("Orange HRM")
@@ -11,8 +11,8 @@ from config import LOGIN_DATE
 class TestLoginValidation:
     """Test class for Client Validation scenarios."""
 
-    username = LOGIN_DATE["username"]
-    password = LOGIN_DATE["password"]
+    username = LOGIN_DATA["username"]
+    password = LOGIN_DATA["password"]
 
     @allure.story("Login Function Validations")
     @allure.severity(allure.severity_level.CRITICAL)
