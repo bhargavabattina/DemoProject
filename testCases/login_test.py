@@ -4,6 +4,7 @@ import allure
 from pageObjects.loginpage import LoginPage
 from utilites.readProperties import ReadConfig
 from config import LOGIN_DATA
+from utilites.customLogger import LogGen
 
 
 @allure.epic("Orange HRM")
@@ -13,6 +14,7 @@ class TestLoginValidation:
 
     username = LOGIN_DATA["username"]
     password = LOGIN_DATA["password"]
+    logger = LogGen.loggen()
 
     @allure.story("Login Function Validations")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -23,15 +25,19 @@ class TestLoginValidation:
         """Test Payer Name Field Validation"""
         login_page = LoginPage(page_with_screenshot)
         try:
+            self.logger.info(f"************ Enter User Name ***********")
             with allure.step("Filling Username"):
                 login_page.fill_username(self.username)
 
+            self.logger.info(f"************ Enter Password ***********")
             with allure.step("Filling Password"):
                 login_page.fill_password(self.password)
 
+            self.logger.info(f"************ Clicking Login Button ***********")
             with allure.step("Clicking Login Button"):
                 login_page.click_login()
 
+            self.logger.info(f"************ Verifying Dashboard ***********")
             with allure.step("Verifying Dashboard "):
                 expected_message = "Dashboard"
                 actual_message = login_page.get_valid_message_text()
@@ -55,15 +61,19 @@ class TestLoginValidation:
         """Test Payer Name Field Validation"""
         login_page = LoginPage(page_with_screenshot)
         try:
+            self.logger.info(f"************ Enter User Name ***********")
             with allure.step("Filling Username"):
                 login_page.fill_username(self.username)
 
+            self.logger.info(f"************ Enter Wrong Password ***********")
             with allure.step("Filling Password"):
                 login_page.fill_password(self.password)
 
+            self.logger.info(f"************ Clicking Login Button ***********")
             with allure.step("Clicking Login Button"):
                 login_page.click_login()
 
+            self.logger.info(f"************ Verifying error message ***********")
             with allure.step("Verifying error message "):
                 expected_text = "Invalid credentials"
 
