@@ -1,0 +1,1 @@
+[{"uid":"5f631f0e9194c77b","name":"Correct Login Credentials Validation","time":{"start":1744021709654,"stop":1744021710845,"duration":1191},"status":"passed","severity":"critical"},{"uid":"c6c28684096e35d1","name":"Wrong Login Credentials Validation","time":{"start":1744021714338,"stop":1744021745176,"duration":30838},"status":"broken","severity":"critical"}]

@@ -1,0 +1,4 @@
+INFO     root:login_test.py:64 ************ Enter User Name ***********
+INFO     root:login_test.py:68 ************ Enter Wrong Password ***********
+INFO     root:login_test.py:72 ************ Clicking Login Button ***********
+INFO     root:login_test.py:76 ************ Verifying error message ***********

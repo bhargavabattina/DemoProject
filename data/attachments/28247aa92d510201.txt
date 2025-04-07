@@ -1,0 +1,4 @@
+INFO     root:login_test.py:28 ************ Enter User Name ***********
+INFO     root:login_test.py:32 ************ Enter Password ***********
+INFO     root:login_test.py:36 ************ Clicking Login Button ***********
+INFO     root:login_test.py:40 ************ Verifying Dashboard ***********
